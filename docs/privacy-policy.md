@@ -5,7 +5,7 @@ permalink: /docs/privacy-policy
 
 # Privacy Policy  
 **Effective Date:** October 26, 2025  
-**Maintained by:** YvonLabs – hello@yvonlabs.eu  
+**Maintained by:** YvonLabs - yvonlabs.plentiful987@passmail.net  
 
 ---
 
