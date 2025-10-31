@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://yvonlabs.github.io/assets/yvonlabs_mark.png" alt="YvonLabs logo" width="120"><br>
+  <img src="/assets/headercheck_logo.png" alt="YvonLabs logo" width="120"><br>
   <b>YvonLabs - pragmatic tools for privacy, performance, and control.</b>
 </p>
 
