@@ -67,9 +67,11 @@ Reports receive acknowledgment within **3 business days**, and validated issues 
 ---
 
 ### Disclosure & Patch Process
+
 Validated fixes are released as patch versions and publicly documented in release notes or changelogs.  
 If a report results in a user-facing privacy or safety improvement, it will be mentioned in the public release notes.  
 Where applicable, model adjustments (for example, `SCM-2025.2`) are versioned in `CHANGELOG.md` for transparency.
+
 ---
 
 ### Principles  
