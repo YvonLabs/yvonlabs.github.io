@@ -1,3 +1,94 @@
+# HeaderCheck – Scoring Model Reference  
+**Model ID:** SCM-2025.1  
+**Maintained by:** YvonLabs  
+**Publication:** Initial Release
+
+---
+
+## Overview  
+HeaderCheck evaluates HTTP response headers using a deterministic, weighted scoring model.  
+Each header contributes a fixed portion of a one-hundred-point composite score, based on its relevance to modern security and privacy best practices.
+
+HeaderCheck recognizes three evaluation states:
+
+1. **OK** – header present and valid  
+2. **Missing (graded)** – header absent and reduces the score  
+3. **Missing (informational)** – header absent but carries no penalty  
+
+All computation happens entirely within the browser. No requests are sent anywhere.
+
+---
+
+## Weight Model  
+
+The scoring system focuses on areas that provide the most meaningful protection: transport security, content isolation, cross-origin behavior, privacy controls, and clickjacking resistance.
+
+| Category | Headers | Weight | Purpose |
+|----------|----------|--------|---------|
+| Transport Security | Strict-Transport-Security | 2.0 | Prevents protocol downgrade and enforces HTTPS |
+| Content Isolation | Content-Security-Policy | 2.0 | Primary defense against XSS and resource injection |
+| Cross-Origin Isolation | COOP, COEP, CORP | 1.0 each | Context isolation and prevention of cross-origin data leaks |
+| Privacy Controls | Permissions-Policy, Referrer-Policy | 1.0 and 0.5 | API restriction and referrer minimization |
+| Framing Protections | X-Frame-Options or frame-ancestors | 1.0 | Mitigates clickjacking |
+| MIME Protection | X-Content-Type-Options | 0.5 | Prevents MIME sniffing when set to nosniff |
+
+**Total weight:** 10.0 points, normalized to one hundred.
+
+---
+
+## Header Evaluation Logic  
+
+HeaderCheck determines the state of each header using consistent, deterministic rules.
+
+---
+
+### 1. OK state  
+A header is considered OK when present and passing validation.
+
+- UI classification: **OK**  
+- Styling: green  
+- Score impact: full weight is applied
+
+---
+
+### 2. Graded missing headers reduce the score  
+
+Graded headers are required security controls that participate in the scoring model.  
+When a graded header is missing or invalid:
+
+- UI classification: **Missing**  
+- Styling:  
+  - **missing** for severe issues  
+  - **weak** for lower-severity cases  
+- Score impact:  
+  - Contributes zero to the OK-weight total  
+  - Weight remains included in the total graded weight  
+  - Final percentage decreases  
+- Behavior:  
+  - All graded headers affect scoring  
+  - Only headers explicitly marked `graded:false` are excluded
+
+---
+
+### 3. Informational missing headers do not reduce the score  
+
+Some checks are helpful to surface but not appropriate to penalize.  
+When an informational header is absent:
+
+- UI classification: **Missing**  
+- Styling: informational weak state  
+- Score impact: none  
+- Weight: not included in either the numerator or denominator  
+- Purpose: visibility without penalty
+
+Examples include optional best-practice hints and advisory controls.
+
+---
+
+## Scoring Formula  
+
+Only graded headers participate in the mathematical model.
+score = round( (sum of OK graded weights / sum of all graded weights) × 100 )
 
 Informational checks are excluded.
 
