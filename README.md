@@ -45,6 +45,13 @@ Follow updates and other projects from YvonLabs at
 
 ---
 
+### Support YvonLabs
+
+Your support helps keep these tools lightweight, private, and independently maintained.  
+
+☕ https://buymeacoffee.com/yvonlabs
+
+
 <p align="center">
   <sub>Minimal • Fast • Focused © YvonLabs</sub>
 </p>

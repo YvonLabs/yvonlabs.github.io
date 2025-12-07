@@ -3,90 +3,129 @@
 **Type:** Chrome Extension  
 **Maintained by:** YvonLabs  
 **Current Model:** `SCM-2025.1`  
-**Last Updated:** November 1, 2025  
+**Last Updated:** November 28, 2025  
 
 ---
 
 ### Overview  
 
-HeaderCheck is a lightweight, privacy-respecting browser extension that inspects HTTP response headers for the active tab and evaluates the site’s security and privacy posture.  
+HeaderCheck is a lightweight, privacy-respecting browser extension that inspects HTTP response headers for the active tab and evaluates the site's security and privacy posture.
 
-It uses a deterministic Boolean scoring model (`SCM-2025.1`) to assign a score from **0–100**, based on header presence and relevance across five weighted categories.  
-All processing occurs **locally within the browser** — no telemetry, remote calls, or data collection.
-
----
-
-### Key Features  
-
-- **Deterministic local scoring** — no API calls, no external dependencies.  
-- **Instant analysis** — one click, one result.  
-- **Weighted categories** based on real-world impact and privacy significance.  
-- **Actionable findings** — quick explanations for missing or weak headers.  
-- **EU-aligned defaults** emphasizing transport security and privacy.  
+It uses a deterministic, weighted scoring model to calculate a composite score from **0–100**, based on the presence and validity of key security headers.  
+All processing occurs **locally in the browser** with no telemetry, network calls, or data collection.
 
 ---
 
-### Scoring Categories  
+### What HeaderCheck Evaluates  
 
-| Category | Weight | Description |
-|-----------|--------|-------------|
-| **Transport Security** | 25 | HSTS and HTTPS enforcement to prevent downgrade attacks |
-| **Content Isolation** | 25 | CSP, X-Frame-Options, sandbox enforcement |
-| **Privacy & Permissions** | 25 | Referrer-Policy, Permissions-Policy, Cross-Origin rules |
-| **Cache & Lifetime** | 15 | Cache-Control, Expires, Pragma behavior |
-| **Misc. Disclosure** | 10 | Server banners, legacy header exposure |
+HeaderCheck analyzes the most impactful modern browser security controls:
 
-Each category contributes to a normalized total of 100 points.  
-For the detailed header-level breakdown, see the [Scoring Model Reference](https://yvonlabs.github.io/docs/scoring-models).
+| Header / Control | Purpose |
+|------------------|----------|
+| **Strict-Transport-Security** | Prevents downgrade attacks and enforces secure transport |
+| **Content-Security-Policy** | Primary defense against XSS and injection |
+| **COOP / COEP / CORP** | Cross-origin and isolation boundaries |
+| **Permissions-Policy** | Restricts high-risk browser APIs |
+| **Referrer-Policy** | Minimizes referrer leakage |
+| **X-Frame-Options / frame-ancestors** | Clickjacking protection |
+| **X-Content-Type-Options (nosniff)** | Prevents MIME sniffing |
+
+Headers are categorized as **graded** or **informational**.  
+Only graded headers impact the score.
 
 ---
 
-### Score Bands  
+### Scoring Model  
 
-| Range | Grade | Meaning |
-|-------|-------|---------|
-| **90–100** | ✅ Pass | Strong alignment with privacy and security best practices |
-| **70–89** | ⚠️ Warning | Minor issues or missing best-practice headers |
-| **<70** | ❌ Fail | Critical controls missing or misconfigured |
+HeaderCheck uses a weighted model totaling **10.0** raw points, normalized to **100**.
+
+| Header | Weight |
+|--------|---------|
+| Content-Security-Policy | 2.0 |
+| Strict-Transport-Security | 2.0 |
+| COOP | 1.0 |
+| COEP | 1.0 |
+| CORP | 1.0 |
+| Permissions-Policy | 1.0 |
+| X-Frame-Options / frame-ancestors | 1.0 |
+| Referrer-Policy | 0.5 |
+| X-Content-Type-Options | 0.5 |
+
+- **OK** → full weight applied  
+- **Missing (graded)** → zero weight, included in denominator  
+- **Missing (informational)** → shown in UI but carries no penalty  
+
+Full scoring details:  
+👉 *See the Scoring Model Reference (`scoring-models.md`)*
+
+---
+
+### Grades and Risk Levels  
+
+HeaderCheck assigns a grade based on the final percentage:
+
+| Score | Grade | Risk |
+|--------|--------|--------|
+| **≥ 85 percent** | A–B | Low |
+| **< 85 percent** | C–D | Medium |
+| **< 60 percent** | F | High |
+
+**Critical headers:**  
+Content-Security-Policy and Strict-Transport-Security.  
+Missing one or both enforces a high-risk outcome.
+
+---
+
+### Informational Checks  
+
+Some headers are surfaced for visibility but do **not** affect the score.  
+These always appear in the UI as **Missing** with informational styling.
+
+Their purpose is awareness, not penalty.
 
 ---
 
 ### Privacy  
 
-HeaderCheck operates entirely on-device.  
-It does **not** collect usage data, transmit logs, or contact any remote endpoints.  
-All logic, evaluation, and rendering occur within Chrome’s extension sandbox.  
+HeaderCheck runs fully on-device:
 
-For global privacy commitments across all YvonLabs tools, see the  
-[Unified Privacy Policy](https://yvonlabs.github.io/docs/privacy-policy).
+- No telemetry  
+- No logging  
+- No external fetch calls  
+- No use of remote services  
+
+All evaluation occurs inside Chrome’s extension sandbox.  
+
+See the [Unified Privacy Policy](https://yvonlabs.github.io/docs/privacy-policy) for platform-wide commitments.
 
 ---
 
 ### Security  
 
-The extension follows YvonLabs’ [Security Policy](https://yvonlabs.github.io/docs/security), which defines:  
-- **Local-only computation** (no remote dependencies)  
-- **Least-privilege permissions**  
-- **Transparent changelogs and deterministic model versions**  
-- **Static review before Chrome Web Store submission**
+The extension adheres to the YvonLabs Security Policy:
+
+- Deterministic local evaluation  
+- Minimal permission footprint  
+- Code review before packaging  
+- Transparent scoring model and versioning  
+- Static assets, no runtime external dependencies
 
 ---
 
-### Release and Model Versioning  
+### Release and Versioning  
 
-- **Binary release:** `v0.1.0-dev`  
-- **Model version:** `SCM-2025.1`  
-- **Evaluation type:** deterministic Boolean scoring  
+- **Extension release:** `v0.1.0-dev`  
+- **Scoring model:** `SCM-2025.1`  
+- **Evaluation type:** deterministic weighted scoring  
 
-Model revisions are versioned independently in [`CHANGELOG.md`](https://github.com/YvonLabs/headercheck/blob/main/CHANGELOG.md).  
-Historical versions remain available for audit or regression testing.
+All updates are tracked in [`CHANGELOG.md`](https://github.com/YvonLabs/headercheck/blob/main/CHANGELOG.md).
 
 ---
 
 ### Repository  
 
-For installation instructions, code, or contribution guidelines, visit:  
-👉 [HeaderCheck on GitHub](https://github.com/YvonLabs/headercheck)
+Installation instructions, source code, and contribution guidance:  
+👉 https://github.com/YvonLabs/headercheck
 
 ---
 
