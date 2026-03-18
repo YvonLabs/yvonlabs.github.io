@@ -7,82 +7,104 @@ permalink: /docs/security
 
 YvonLabs welcomes responsible disclosure of security or privacy vulnerabilities across all its projects.
 
-My workbench includes small, independent utilities, web tools, and browser-based software - typically client-side and local by design.  
-There are no centralized production servers or remote APIs associated with most YvonLabs software.
+The workbench includes Chrome extensions, open source tools, and self-hosted software. Projects are built with a local-first, minimal-permissions philosophy. Most do not involve centralized servers or remote APIs.
 
 ---
 
-### Supported Versions
-Security fixes apply to current stable releases and the active development branch (`main`).  
-Older builds may run but do not receive patches or dependency updates.
+### Supported versions
+
+Security fixes apply to current stable releases and the active development branch (`main`). Older builds may continue to function but do not receive patches or dependency updates.
 
 | Version | Supported | Notes |
-|----------|------------|-------|
-| **Current Release** | ✅ Active | Latest public release with all fixes and hardening |
-| **main** | ✅ Active | In-development, verified before publishing |
-| **Older versions** | ⚠︎ Limited | May work but not maintained |
+|---------|-----------|-------|
+| Current release | Active | Latest public release with all fixes |
+| main | Active | In development, reviewed before publishing |
+| Older versions | Limited | May work but not maintained |
 
-Fixes land in `main` first, then are published as a patch release (for example, `0.2.2`).  
-Once published to the Chrome Web Store or other platform, that becomes the supported version.
-
----
-
-YvonLabs projects do not send, store, or process external data.  
-Security issues generally refer to:  
-- Handling of data within the user’s local environment (browser, extension sandbox, or OS scope)  
-- Permission or privilege misconfiguration  
-- Injection or rendering of untrusted content  
-- Violation of a project’s defined **local-only** or **read-only** boundaries  
-- Scoring or evaluation logic that may misrepresent a site’s security or privacy headers
+Fixes land in `main` first, then are published as a patch release. Once published to the Chrome Web Store or deployed as a release, that version becomes the supported one.
 
 ---
 
-### HeaderCheck Model Context  
+### Projects
 
-**HeaderCheck** uses a deterministic scoring model (`SCM-2025.1`) that evaluates HTTP response headers locally.  
-The model does not involve live scanning or external calls.  
-All analysis and computation occur entirely within the user’s browser context.  
+#### ToastKit
 
-**Security implications:**  
-- No remote communication or telemetry  
-- No API exposure beyond Chrome’s declarative permissions  
-- Scoring logic cannot exfiltrate or transmit content  
-- Model results reflect header configuration state only — not vulnerability severity
+Chrome extension for targeted site resets. Clears cookies, cache, and storage for a single domain without affecting the rest of the browser.
+
+Security scope:
+- Handling of browser storage and cookie data within Chrome's sandboxed APIs
+- Permission model scoped to `activeTab` and `browsingData`
+- Injection or rendering of untrusted content in the popup
+- No remote communication, no telemetry, no external dependencies
+
+#### HeaderCheck
+
+Chrome extension that evaluates HTTP response headers and produces a weighted privacy and security score using a deterministic scoring model (`SCM-2025.1`).
+
+Security scope:
+- All analysis occurs entirely within the user's browser context
+- No remote communication or telemetry
+- No API exposure beyond Chrome's declarative permissions
+- Scoring logic reflects header configuration state only, not vulnerability severity
+- Model results are static and auditable
+
+#### IVAR
+
+Open source threat intelligence dashboard. Self-hosted. Pulls from public feeds, triages signals using AI, and surfaces what matters for your stack.
+
+Security scope:
+- Injection or mishandling of untrusted feed content
+- Authentication or access control issues in the FastAPI backend
+- Exposure of sensitive configuration such as API keys or org profile data
+- Vulnerabilities in Python or Node dependencies
+- IVAR does not collect telemetry or operate shared cloud infrastructure
 
 ---
 
-### Reporting a Vulnerability
-Please do **not** open a public issue for potential security or privacy concerns.  
-Instead, email:  
-**237143566+yvon-l@users.noreply.github.com**
+### General scope
+
+Across all YvonLabs projects, security issues generally refer to:
+
+- Handling of data within the user's local environment
+- Permission or privilege misconfiguration
+- Injection or rendering of untrusted content
+- Violation of a project's defined local-only or read-only boundaries
+- Logic that may misrepresent security or privacy state
+
+---
+
+### Reporting a vulnerability
+
+Please do not open a public issue for potential security or privacy concerns.
+
+Email: **237143566+yvon-l@users.noreply.github.com**
 
 Include:
-- Steps to reproduce  
-- Expected and actual behavior  
-- Environment details (browser, OS, or runtime)  
-- Project and version information  
+- Steps to reproduce
+- Expected and actual behavior
+- Environment details (browser, OS, or runtime version)
+- Project name and version
 
-Reports receive acknowledgment within **3 business days**, and validated issues are prioritized.
-
----
-
-### Disclosure & Patch Process
-
-Validated fixes are released as patch versions and publicly documented in release notes or changelogs.  
-If a report results in a user-facing privacy or safety improvement, it will be mentioned in the public release notes.  
-Where applicable, model adjustments (for example, `SCM-2025.2`) are versioned in `CHANGELOG.md` for transparency.
+Reports receive acknowledgment within 3 business days. Validated issues are prioritized and patched promptly.
 
 ---
 
-### Principles  
-- **Local-first:** all computation and storage remain within the user’s device  
-- **Minimal permissions:** least privilege for Chrome or web APIs  
-- **No telemetry:** no analytics, no tracking, no remote calls  
-- **Transparent changelog:** all changes, including security patches, are versioned  
-- **Deterministic evaluation:** models (like HeaderCheck SCM-2025.1) are static and auditable   
+### Disclosure and patch process
+
+Validated fixes are released as patch versions and documented in release notes or changelogs. If a report results in a user-facing privacy or safety improvement it will be mentioned in the public release notes. Where applicable, model adjustments such as `SCM-2025.2` are versioned in `CHANGELOG.md` for transparency.
+
+---
+
+### Principles
+
+- **Local-first:** computation and storage remain within the user's device where possible
+- **Minimal permissions:** least privilege for Chrome, web, and server APIs
+- **No telemetry:** no analytics, no tracking, no remote calls unless explicitly configured
+- **Transparent changelog:** all changes including security patches are versioned and documented
+- **Deterministic evaluation:** scoring models are static and auditable
 
 ---
 
 <p align="center">
-  <sub>Minimal • Fast • Focused © YvonLabs</sub>
+  <sub>Minimal · Fast · Focused © YvonLabs</sub>
 </p>

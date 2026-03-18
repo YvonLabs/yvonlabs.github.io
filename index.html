@@ -231,6 +231,10 @@
     animation-delay: 0.5s;
   }
 
+  .proj-card:nth-child(4) {
+    animation-delay: 0.6s;
+  }
+
   .proj-card::before {
     content: "";
     position: absolute;
@@ -512,11 +516,10 @@
       <div class="brand-block">
         <h1>
           YvonLabs
-          <span class="subtitle">independent workbench</span>
+          <span class="subtitle">security tools &amp; open source</span>
         </h1>
         <p class="tagline">
-          Projects I tinker on and use: small tools, independent sites, tech resources. 
-          Built with security, privacy, and pragmatic design in mind.
+          Small tools, serious intent. Security and privacy software built for people who pay attention to what runs on their machines.
         </p>
       </div>
     </header>
@@ -531,24 +534,23 @@
 
       <div class="projects">
 
-        <!-- ToastKit -->
+        <!-- IVAR -->
         <article class="proj-card">
           <div class="proj-top">
             <div class="proj-name">
-              <span>ToastKit</span>
-              <span class="status-pill">chrome extension</span>
+              <span>IVAR</span>
+              <span class="status-pill" style="background-color:rgba(76,200,122,.12);border:1px solid rgba(76,200,122,.4);color:#4CC87A;box-shadow:0 2px 4px rgba(76,200,122,.1);">open source</span>
             </div>
           </div>
 
           <div class="proj-desc">
-            Chrome extension for targeted site resets. Clears cookies, cache, storage, service workers, and permissions for a single domain without affecting your entire browser. Built for QA, debugging, and privacy cleanup.
+            Open source threat intelligence dashboard for security teams. Pulls from public feeds across the US and EU, filters signals against your declared tech stack, and surfaces what actually requires your attention.
           </div>
 
           <div class="proj-links">
-            <a href="https://github.com/YvonLabs/toastkit" target="_blank" rel="noopener noreferrer">source</a>
-            <a href="https://yvonlabs.github.io/docs/privacy-policy" target="_blank" rel="noopener noreferrer">privacy</a>
-            <a href="https://chromewebstore.google.com/detail/toastkit/elejhggeniacnbiaefebpehiepmbokam"
-       target="_blank" rel="noopener noreferrer">chrome web store</a>
+            <a href="https://getivar.com" target="_blank" rel="noopener noreferrer">website</a>
+            <a href="https://demo.getivar.com" target="_blank" rel="noopener noreferrer">live demo</a>
+            <a href="https://github.com/YvonLabs/ivar" target="_blank" rel="noopener noreferrer">source</a>
           </div>
         </article>
 
@@ -568,8 +570,27 @@
           <div class="proj-links">
             <a href="https://github.com/YvonLabs/headercheck" target="_blank" rel="noopener noreferrer">source</a>
             <a href="https://yvonlabs.github.io/docs/privacy-policy" target="_blank" rel="noopener noreferrer">privacy</a>
-           <a href="https://chromewebstore.google.com/detail/headercheck/hpjigpjlgonbnneifjfkgeoghpobcncj"
-       target="_blank" rel="noopener noreferrer">chrome web store</a>
+            <a href="https://chromewebstore.google.com/detail/headercheck/hpjigpjlgonbnneifjfkgeoghpobcncj" target="_blank" rel="noopener noreferrer">chrome web store</a>
+          </div>
+        </article>
+
+        <!-- ToastKit -->
+        <article class="proj-card">
+          <div class="proj-top">
+            <div class="proj-name">
+              <span>ToastKit</span>
+              <span class="status-pill">chrome extension</span>
+            </div>
+          </div>
+
+          <div class="proj-desc">
+            Chrome extension for targeted site resets. Clears cookies, cache, storage, service workers, and permissions for a single domain without affecting your entire browser. Built for QA, debugging, and privacy cleanup.
+          </div>
+
+          <div class="proj-links">
+            <a href="https://github.com/YvonLabs/toastkit" target="_blank" rel="noopener noreferrer">source</a>
+            <a href="https://yvonlabs.github.io/docs/privacy-policy" target="_blank" rel="noopener noreferrer">privacy</a>
+            <a href="https://chromewebstore.google.com/detail/toastkit/elejhggeniacnbiaefebpehiepmbokam" target="_blank" rel="noopener noreferrer">chrome web store</a>
           </div>
         </article>
 
@@ -581,7 +602,7 @@
   <div>
     contact 
     <code tabindex="0" role="button" aria-label="Email address: yvonlabs.plentiful987@passmail.net">
-      yvonlabs.plentiful987@passmail.net
+      <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b121d0405070a0918451b070e051f020d1e0752535c2b1b0a1818060a020745050e1f">[email&#160;protected]</a>
     </code>
   </div>
 
@@ -599,20 +620,11 @@
 
   </main>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     document.getElementById('y-year').textContent = new Date().getFullYear();
 
     // copy email to clipboard
     document.querySelector('code').addEventListener('click', function() {
       const email = this.textContent;
       navigator.clipboard.writeText(email).then(() => {
-        const original = this.textContent;
-        this.textContent = 'copied!';
-        setTimeout(() => {
-          this.textContent = original;
-        }, 1500);
-      }).catch(err => console.error('Failed to copy:', err));
-    });
-  </script>
-</body>
-</html>
+        const orig
