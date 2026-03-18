@@ -600,10 +600,10 @@
     <!-- footer -->
     <footer>
   <div>
-    contact 
-    <code tabindex="0" role="button" aria-label="Email address: yvonlabs.plentiful987@passmail.net">
-      <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b121d0405070a0918451b070e051f020d1e0752535c2b1b0a1818060a020745050e1f">[email&#160;protected]</a>
-    </code>
+    contact
+    <code tabindex="0" role="button" aria-label="Copy email address">
+  yvonlabs.plentiful987@passmail.net
+  </code>
   </div>
 
   <div>
@@ -620,11 +620,17 @@
 
   </main>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    document.getElementById('y-year').textContent = new Date().getFullYear();
+ <script>
+  document.getElementById('y-year').textContent = new Date().getFullYear();
 
-    // copy email to clipboard
-    document.querySelector('code').addEventListener('click', function() {
-      const email = this.textContent;
-      navigator.clipboard.writeText(email).then(() => {
-        const orig
+  document.querySelector('code[aria-label="Copy email address"]').addEventListener('click', function() {
+    const email = this.textContent.trim();
+    navigator.clipboard.writeText(email).then(() => {
+      const original = this.textContent;
+      this.textContent = 'copied!';
+      setTimeout(() => {
+        this.textContent = original;
+      }, 1500);
+    }).catch(err => console.error('Failed to copy:', err));
+  });
+</script>
